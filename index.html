@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
+      type="application/javascript"
+    ></script>
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div>
+      <h1>web3 приложене для Подброса монеты</h1>
+      <button onclick="play(0)">Stone</button>
+      <button onclick="play(1)">Scissor</button>
+      <button onclick="play(2)">Paper</button>
+      <button onclick="getGamePlayed()">Obtain the restults</button>
+      <p>Ваши результаты: <span id="result"></span></p>
+    </div>
+  </body>
+</html>
