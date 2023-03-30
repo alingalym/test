@@ -1,57 +1,63 @@
-const contractAddress = "0x9F03cB3738aEed7ffc5fCb2d12e745F24dEf197a";
+const contractAddress = "0x37722E7a5D00DD43C0372eECF27968dB0Db4E35d";
 const abi = [
-  {
-    inputs: [],
-    stateMutability: "payable",
-    type: "constructor",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "player",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "isWinner",
-        type: "bool",
-      },
-    ],
-    name: "GamePlayed",
-    type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint8",
-        name: "_option",
-        type: "uint8",
-      },
-    ],
-    name: "playGame",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    stateMutability: "payable",
-    type: "receive",
-  },
+	{
+		"inputs": [
+			{
+				"internalType": "uint8",
+				"name": "_option",
+				"type": "uint8"
+			}
+		],
+		"name": "playGame",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "payable",
+		"type": "constructor"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
+	},
+	{
+		"inputs": [],
+		"name": "getRes",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "myRes",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
 ];
 const provider = new ethers.providers.Web3Provider(window.ethereum, 97); //bnbchain testnet
 let signer;
 let contract;
-let res;
 
 //Нужно будет создать функцию
 provider.send("eth_requestAccounts", []).then(() => {
@@ -65,11 +71,12 @@ async function play(option) {
   let amountInWei = ethers.utils.parseEther((0.001).toString());
   console.log(amountInWei);
 
-  res = await contract.playGame(option, { value: amountInWei });
+  //let _result = await contract.playGame(option, { value: amountInWei });
+  let _result = await contract.playGame(option);
 }
 
 async function getGamePlayed() {
-  let queryResult = await contract.queryFilter(
+  /*let queryResult = await contract.queryFilter(
     "GamePlayed",
     (await provider.getBlockNumber()) - 5000,
     await provider.getBlockNumber()
@@ -77,12 +84,12 @@ async function getGamePlayed() {
   let queryResultRecent = queryResult[queryResult.length - 1];
 
   let player = await queryResultRecent.args.player.toString();
-  let result = await queryResultRecent.args.isWinner.toString();
+  let result = await queryResultRecent.args.myRes.toString();*/
 
-  let resultLogs = `
-    player: ${player}, 
-    result: ${result == "false" ? "LOSE 😥" : "WIN 🎉"}`;
-  console.log(result);
+  let resultLogs = await contract.getRes();
+  //  player: ${player}, 
+  //  result: ${result == "Lose" ? "LOSE 😥" : "WIN 🎉"}`;
+  //console.log(result);
 
   let resultLog = document.getElementById("result");
   resultLog.innerText = resultLogs;
